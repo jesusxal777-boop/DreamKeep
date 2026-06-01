@@ -43,6 +43,66 @@ async function loadProfile(){
         }
     );
 
+    window.onload = () => {
+
+    const savedToken =
+    localStorage.getItem("dreamkeep_token");
+
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: async (response) => {
+
+            accessToken = response.access_token;
+
+            localStorage.setItem(
+                "dreamkeep_token",
+                accessToken
+            );
+
+            await loadProfile();
+            loadDocuments();
+
+        }
+    });
+
+    if(savedToken){
+
+        accessToken = savedToken;
+
+        loadProfile();
+        loadDocuments();
+
+    }
+
+};
+
+    callback: async (response) => {
+
+    accessToken = response.access_token;
+
+    localStorage.setItem(
+        "dreamkeep_token",
+        accessToken
+    );
+
+    await loadProfile();
+    loadDocuments();
+
+}callback: async (response) => {
+
+    accessToken = response.access_token;
+
+    localStorage.setItem(
+        "dreamkeep_token",
+        accessToken
+    );
+
+    await loadProfile();
+    loadDocuments();
+
+}
+
     const user = await res.json();
 
     document
