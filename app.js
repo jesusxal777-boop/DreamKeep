@@ -1,10 +1,9 @@
 document
-.getElementById("new-doc")
+.getElementById(“new-doc”)
 .addEventListener(
-    "click",
-    createDocument
+“click”,
+createDocument
 );
-
 document
 .getElementById("title")
 .addEventListener(
