@@ -1,7 +1,20 @@
 document
 .getElementById("new-doc")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    createDocument
+);
 
-    createDocument();
+document
+.getElementById("title")
+.addEventListener(
+    "input",
+    saveCurrentDocument
+);
 
-});
+document
+.getElementById("content")
+.addEventListener(
+    "input",
+    saveCurrentDocument
+);
