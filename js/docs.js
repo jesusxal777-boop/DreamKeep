@@ -1,11 +1,31 @@
 async function createDocument(){
 
-    console.log("Crear documento");
+    const title =
+    prompt("Nombre del documento");
 
-}
+    if(!title) return;
 
-async function loadDocuments(){
+    const response = await fetch(
+        "https://docs.googleapis.com/v1/documents",
+        {
+            method:"POST",
+            headers:{
+                Authorization:`Bearer ${accessToken}`,
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                title:title
+            })
+        }
+    );
 
-    console.log("Cargar documentos");
+    const doc = await response.json();
+
+    alert(
+        "Documento creado:\n" +
+        doc.title
+    );
+
+    loadDocuments();
 
 }
