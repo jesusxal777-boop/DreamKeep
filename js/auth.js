@@ -4,7 +4,7 @@ function initAuth() {
 
     google.accounts.id.initialize({
         client_id:
-        "TU_CLIENT_ID",
+        "743766102684-320nu8h0d5dnoac0mpdg1stm582nmb6k.apps.googleusercontent.com",
         callback: handleCredentialResponse
     });
 
