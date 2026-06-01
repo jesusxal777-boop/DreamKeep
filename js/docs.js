@@ -1,24 +1,24 @@
-async function createDocument(){
+function createDocument(){
 
-    const title =
-    prompt("Nombre del documento");
+    const doc = {
 
-    if(!title) return;
+        id: crypto.randomUUID(),
 
-    const response = await fetch(
-        "https://docs.googleapis.com/v1/documents",
-        {
-            method:"POST",
-            headers:{
-                Authorization:`Bearer ${accessToken}`,
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                title:title
-            })
-        }
-    );
+        title:"Sin título",
 
+        content:""
+
+    };
+
+    documents.unshift(doc);
+
+    currentDoc = doc;
+
+    renderDocuments();
+
+    openDocument(doc.id);
+
+}
     const doc = await response.json();
 
     alert(
@@ -69,5 +69,70 @@ async function loadDocuments(){
         list.appendChild(item);
 
     });
+
+}
+
+function renderDocuments(){
+
+    const list =
+    document.getElementById("docs-list");
+
+    list.innerHTML = "";
+
+    documents.forEach(doc=>{
+
+        const div =
+        document.createElement("div");
+
+        div.className = "doc-item";
+
+        div.textContent = doc.title;
+
+        div.onclick = ()=>{
+
+            openDocument(doc.id);
+
+        };
+
+        list.appendChild(div);
+
+    });
+
+}
+
+function openDocument(id){
+
+    const doc =
+    documents.find(d=>d.id===id);
+
+    if(!doc) return;
+
+    currentDoc = doc;
+
+    document
+    .getElementById("title")
+    .value = doc.title;
+
+    document
+    .getElementById("content")
+    .innerHTML = doc.content;
+
+}
+
+function saveCurrentDocument(){
+
+    if(!currentDoc) return;
+
+    currentDoc.title =
+    document
+    .getElementById("title")
+    .value;
+
+    currentDoc.content =
+    document
+    .getElementById("content")
+    .innerHTML;
+
+    renderDocuments();
 
 }
