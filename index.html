@@ -28,30 +28,38 @@
 
 <main>
 
-<section class="sidebar">
+    <aside class="sidebar">
 
-    <button id="new-doc">
-        Nuevo documento
-    </button>
+        <div class="sidebar-header">
 
-    <div id="docs-list"></div>
+            <button id="new-doc">
+                ➕ Nuevo documento
+            </button>
 
-</section>
+            <input
+                id="search"
+                placeholder="Buscar..."
+            >
 
-<section class="editor">
+        </div>
 
-    <input
-        type="text"
-        id="title"
-        placeholder="Título"
-    >
+        <div id="docs-list"></div>
 
-    <textarea
-        id="content"
-        placeholder="Empieza a escribir..."
-    ></textarea>
+    </aside>
 
-</section>
+    <section class="workspace">
+
+        <input
+            id="title"
+            placeholder="Título del documento"
+        >
+
+        <div
+            id="content"
+            contenteditable="true"
+        ></div>
+
+    </section>
 
 </main>
 
