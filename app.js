@@ -1,7 +1,7 @@
 document
-.getElementById(“new-doc”)
+.getElementById("new-doc")
 .addEventListener(
-“click”,
+"click",
 createDocument
 );
 document
