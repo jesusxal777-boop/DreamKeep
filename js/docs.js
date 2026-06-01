@@ -253,3 +253,20 @@ async function saveDocument(){
     }
 
 }
+
+function saveCurrentDocument(){
+
+    if(!currentDocumentId) return;
+
+    const content =
+    document.getElementById("content");
+
+    const title =
+    document.getElementById("title");
+
+    if(!content || !title) return;
+
+    // guardado local temporal (UI)
+    console.log("Guardando local...");
+
+}
