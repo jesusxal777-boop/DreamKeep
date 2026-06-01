@@ -17,3 +17,10 @@ document
     "input",
     saveCurrentDocument
 );
+
+document
+.getElementById("save-doc")
+.addEventListener(
+    "click",
+    saveDocument
+);
