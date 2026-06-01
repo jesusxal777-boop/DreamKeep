@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamKeep</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div class="background"></div>
+
+<header>
+    <h1>☁️ DreamKeep</h1>
+
+    <div id="user-info" hidden>
+        <img id="avatar">
+        <span id="username"></span>
+    </div>
+
+    <button id="login-btn">
+        Iniciar sesión con Google
+    </button>
+</header>
+
+<main>
+
+<section class="sidebar">
+
+    <button id="new-doc">
+        Nuevo documento
+    </button>
+
+    <div id="docs-list"></div>
+
+</section>
+
+<section class="editor">
+
+    <input
+        type="text"
+        id="title"
+        placeholder="Título"
+    >
+
+    <textarea
+        id="content"
+        placeholder="Empieza a escribir..."
+    ></textarea>
+
+</section>
+
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/docs.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/settings.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
