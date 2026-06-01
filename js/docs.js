@@ -130,3 +130,126 @@ catch(error){
 }
 
 }
+
+async function saveDocument(){
+
+    if(!currentDocumentId){
+
+        alert(
+            "No hay documento abierto"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const content =
+        document
+        .getElementById("content")
+        .innerText;
+
+        const docResponse =
+        await fetch(
+            `https://docs.googleapis.com/v1/documents/${currentDocumentId}`,
+            {
+                headers:{
+                    Authorization:`Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const doc =
+        await docResponse.json();
+
+        let endIndex = 1;
+
+        if(
+            doc.body &&
+            doc.body.content &&
+            doc.body.content.length > 0
+        ){
+
+            const last =
+            doc.body.content[
+                doc.body.content.length - 1
+            ];
+
+            endIndex =
+            last.endIndex - 1;
+
+        }
+
+        const requests = [];
+
+        if(endIndex > 1){
+
+            requests.push({
+
+                deleteContentRange:{
+
+                    range:{
+                        startIndex:1,
+                        endIndex:endIndex
+                    }
+
+                }
+
+            });
+
+        }
+
+        requests.push({
+
+            insertText:{
+
+                location:{
+                    index:1
+                },
+
+                text:content
+
+            }
+
+        });
+
+        await fetch(
+
+            `https://docs.googleapis.com/v1/documents/${currentDocumentId}:batchUpdate`,
+
+            {
+
+                method:"POST",
+
+                headers:{
+                    Authorization:`Bearer ${accessToken}`,
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    requests:requests
+
+                })
+
+            }
+
+        );
+
+        alert(
+            "Documento guardado"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Error al guardar"
+        );
+
+    }
+
+}
