@@ -1,12 +1,24 @@
+// docs.js
+
+let documents = [];
+
+let currentDoc = null;
+
+/*
+========================
+CREAR DOCUMENTO
+========================
+*/
+
 function createDocument(){
 
     const doc = {
 
         id: crypto.randomUUID(),
 
-        title:"Sin título",
+        title: "Sin título",
 
-        content:""
+        content: ""
 
     };
 
@@ -18,51 +30,38 @@ function createDocument(){
 
     openDocument(doc.id);
 
-}
-    const doc = await response.json();
-
-    alert(
-        "Documento creado:\n" +
-        doc.title
-    );
-
-    loadDocuments();
+    saveToStorage();
 
 }
 
-async function loadDocuments(){
+/*
+========================
+MOSTRAR DOCUMENTOS
+========================
+*/
 
-    const response = await fetch(
-        "https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.document'",
-        {
-            headers:{
-                Authorization:`Bearer ${accessToken}`
-            }
-        }
-    );
-
-    const data = await response.json();
+function renderDocuments(){
 
     const list =
     document.getElementById("docs-list");
 
+    if(!list) return;
+
     list.innerHTML = "";
 
-    data.files.forEach(file => {
+    documents.forEach(doc => {
 
         const item =
         document.createElement("div");
 
         item.className = "doc-item";
 
-        item.textContent = file.name;
+        item.textContent =
+        doc.title || "Sin título";
 
         item.onclick = () => {
 
-            window.open(
-                `https://docs.google.com/document/d/${file.id}/edit`,
-                "_blank"
-            );
+            openDocument(doc.id);
 
         };
 
@@ -72,67 +71,199 @@ async function loadDocuments(){
 
 }
 
-function renderDocuments(){
+/*
+========================
+ABRIR DOCUMENTO
+========================
+*/
+
+function openDocument(id){
+
+    const doc =
+    documents.find(d => d.id === id);
+
+    if(!doc) return;
+
+    currentDoc = doc;
+
+    const title =
+    document.getElementById("title");
+
+    const content =
+    document.getElementById("content");
+
+    if(title){
+
+        title.value = doc.title;
+
+    }
+
+    if(content){
+
+        content.innerHTML = doc.content;
+
+    }
+
+}
+
+/*
+========================
+GUARDAR DOCUMENTO
+========================
+*/
+
+function saveCurrentDocument(){
+
+    if(!currentDoc) return;
+
+    const title =
+    document.getElementById("title");
+
+    const content =
+    document.getElementById("content");
+
+    currentDoc.title =
+    title.value || "Sin título";
+
+    currentDoc.content =
+    content.innerHTML;
+
+    saveToStorage();
+
+}
+
+/*
+========================
+LOCAL STORAGE
+========================
+*/
+
+function saveToStorage(){
+
+    localStorage.setItem(
+        "dreamkeep_documents",
+        JSON.stringify(documents)
+    );
+
+}
+
+function loadFromStorage(){
+
+    const saved =
+    localStorage.getItem(
+        "dreamkeep_documents"
+    );
+
+    if(!saved) return;
+
+    try{
+
+        documents =
+        JSON.parse(saved);
+
+        renderDocuments();
+
+        if(documents.length > 0){
+
+            openDocument(
+                documents[0].id
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Error cargando documentos",
+            error
+        );
+
+    }
+
+}
+
+/*
+========================
+ELIMINAR DOCUMENTO
+========================
+*/
+
+function deleteCurrentDocument(){
+
+    if(!currentDoc) return;
+
+    documents =
+    documents.filter(
+        doc => doc.id !== currentDoc.id
+    );
+
+    currentDoc = null;
+
+    saveToStorage();
+
+    renderDocuments();
+
+    document
+    .getElementById("title")
+    .value = "";
+
+    document
+    .getElementById("content")
+    .innerHTML = "";
+
+    if(documents.length > 0){
+
+        openDocument(
+            documents[0].id
+        );
+
+    }
+
+}
+
+/*
+========================
+BUSCAR
+========================
+*/
+
+function searchDocuments(text){
 
     const list =
     document.getElementById("docs-list");
 
     list.innerHTML = "";
 
-    documents.forEach(doc=>{
+    documents
+    .filter(doc =>
 
-        const div =
+        doc.title
+        .toLowerCase()
+        .includes(
+            text.toLowerCase()
+        )
+
+    )
+    .forEach(doc => {
+
+        const item =
         document.createElement("div");
 
-        div.className = "doc-item";
+        item.className =
+        "doc-item";
 
-        div.textContent = doc.title;
+        item.textContent =
+        doc.title;
 
-        div.onclick = ()=>{
+        item.onclick = () => {
 
             openDocument(doc.id);
 
         };
 
-        list.appendChild(div);
+        list.appendChild(item);
 
     });
-
-}
-
-function openDocument(id){
-
-    const doc =
-    documents.find(d=>d.id===id);
-
-    if(!doc) return;
-
-    currentDoc = doc;
-
-    document
-    .getElementById("title")
-    .value = doc.title;
-
-    document
-    .getElementById("content")
-    .innerHTML = doc.content;
-
-}
-
-function saveCurrentDocument(){
-
-    if(!currentDoc) return;
-
-    currentDoc.title =
-    document
-    .getElementById("title")
-    .value;
-
-    currentDoc.content =
-    document
-    .getElementById("content")
-    .innerHTML;
-
-    renderDocuments();
 
 }
