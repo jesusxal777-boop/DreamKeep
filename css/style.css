@@ -81,3 +81,60 @@ main{
 
     font-size:1rem;
 }
+
+.workspace{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+}
+
+#title{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:20px;
+    margin-bottom:15px;
+    font-size:1.5rem;
+}
+
+#content{
+    flex:1;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.35);
+
+    backdrop-filter:blur(20px);
+
+    overflow:auto;
+
+    outline:none;
+
+    min-height:500px;
+}
+
+.doc-item{
+    padding:12px;
+    margin-top:10px;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    background:rgba(255,255,255,.25);
+}
+
+.doc-item:hover{
+    transform:translateY(-2px);
+}
+
+#search{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:15px;
+}
